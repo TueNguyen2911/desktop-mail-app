@@ -6,19 +6,24 @@
 #include <QListWidgetItem>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QScrollArea>
 #include "mailbox.h"
 #include "mail.h"
 
 MailBox::MailBox(QWidget *parent): QWidget(parent)
 {
-    mainlayout = new QHBoxLayout();
-    inboxlayout = new QVBoxLayout();
+    mainlayout = new QGridLayout();
 
     QFile file;
     file.setFileName("mails.json");
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QJsonDocument mails = QJsonDocument::fromJson(file.readAll());
     QJsonObject item = mails.object();
+
+    QWidget *wdg = new QWidget;
+    QScrollArea *scroll = new QScrollArea;
+    QWidget *content_widget = new QWidget;
+    inboxlayout = new QVBoxLayout(content_widget);
 
     messages = item.value(QString("messages")).toArray();
     foreach (const QJsonValue & v, messages) {
@@ -35,9 +40,17 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
         inboxlayout->addWidget(m);
         connect(m, &Mail::clicked, this, &MailBox::onMailSelect);
     }
+
+    scroll->setWidget(content_widget);
+    wdg->setLayout(new QVBoxLayout);
+    wdg->layout()->addWidget(scroll);
+    wdg->setMinimumSize(300,500);
+
     mail = new MailDetails();
-    mainlayout->addLayout(inboxlayout);
-    mainlayout->addWidget(mail);
+    mail->setMinimumSize(500,500);
+
+    mainlayout->addWidget(wdg,1,0);
+    mainlayout->addWidget(mail,1,1);
     setLayout(mainlayout);
 
     file.close();

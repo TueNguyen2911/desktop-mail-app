@@ -5,7 +5,7 @@
 #include <QListWidget>
 #include <QJsonArray>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QList>
 #include <QLabel>
 
@@ -19,7 +19,7 @@ class MailBox : public QWidget
 private:
     QJsonArray messages;
     MailDetails *mail;
-    QHBoxLayout *mainlayout;
+    QGridLayout *mainlayout;
     QVBoxLayout *inboxlayout;
 
 public:
