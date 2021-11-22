@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QPushButton>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -49,6 +50,19 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     mail = new MailDetails();
     mail->setMinimumSize(500,500);
 
+    QHBoxLayout *btns = new QHBoxLayout();
+    QPushButton *compose = new QPushButton("Compose");
+    compose->setMaximumSize(100,50);
+    QPushButton *sent = new QPushButton("Sent");
+    sent->setMaximumSize(100,50);
+
+    btns->addWidget(compose);
+    btns->addWidget(sent);
+
+    connect(compose, &QPushButton::clicked, this, &MailBox::onComposeClicked);
+    //connect(compose, &QPushButton::clicked, this, &MailBox::onSentClicked);
+
+    mainlayout->addLayout(btns, 0, 0);
     mainlayout->addWidget(wdg,1,0);
     mainlayout->addWidget(mail,1,1);
     setLayout(mainlayout);
@@ -61,12 +75,16 @@ void MailBox::onMailSelect(QString id)
     foreach (const QJsonValue & v, messages) {
         QJsonObject obj = v.toObject();
         if(obj.value("id") == id) {
-//            qWarning()<<obj;
+            qDebug() << "Clicked";
             this->mail->setDetails(obj);
         }
     }
 }
-
+void MailBox::onComposeClicked()
+{
+    composeBox = new ComposeMail();
+    mainlayout->addWidget(composeBox, 1, 1);
+}
 MailBox::~MailBox()
 {
 }
