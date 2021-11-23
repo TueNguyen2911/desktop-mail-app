@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QPushButton>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -50,28 +51,45 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     mail = new MailDetails();
     mail->setMinimumSize(500,500);
 
-    QPushButton *composeButton = new QPushButton("Compose");
-    QPushButton *starButton = new QPushButton("Star");
-    QPushButton *deleteButton = new QPushButton("Delete");
+//<<<<<<< HEAD
+//    QPushButton *composeButton = new QPushButton("Compose");
+//    QPushButton *starButton = new QPushButton("Star");
+//    QPushButton *deleteButton = new QPushButton("Delete");
 
-    mainlayout->addWidget(composeButton, 0,0);
-    mainlayout->addWidget(starButton, 0,1);
-    mainlayout->addWidget(deleteButton, 0,2);
+//    mainlayout->addWidget(composeButton, 0,0);
+//    mainlayout->addWidget(starButton, 0,1);
+//    mainlayout->addWidget(deleteButton, 0,2);
 
-    QPushButton *inboxButton = new QPushButton("Inbox");
-    QPushButton *draftsButton = new QPushButton("Drafts");
-    QPushButton *sentButton = new QPushButton("Sent");
+//    QPushButton *inboxButton = new QPushButton("Inbox");
+//    QPushButton *draftsButton = new QPushButton("Drafts");
+//    QPushButton *sentButton = new QPushButton("Sent");
 
-    QGridLayout *inboxTabBar = new QGridLayout();
-    inboxTabBar->addWidget(inboxButton,0,0);
-    inboxTabBar->addWidget(draftsButton,0,1);
-    inboxTabBar->addWidget(sentButton,0,2);
+//    QGridLayout *inboxTabBar = new QGridLayout();
+//    inboxTabBar->addWidget(inboxButton,0,0);
+//    inboxTabBar->addWidget(draftsButton,0,1);
+//    inboxTabBar->addWidget(sentButton,0,2);
 
-    QVBoxLayout *sideBar = new QVBoxLayout();
-    sideBar->addLayout(inboxTabBar);
-    sideBar->addWidget(wdg);
+//    QVBoxLayout *sideBar = new QVBoxLayout();
+//    sideBar->addLayout(inboxTabBar);
+//    sideBar->addWidget(wdg);
 
-    mainlayout->addLayout(sideBar,1,0);
+//    mainlayout->addLayout(sideBar,1,0);
+//=======
+    QHBoxLayout *btns = new QHBoxLayout();
+    QPushButton *compose = new QPushButton("Compose");
+    compose->setMaximumSize(100,50);
+    QPushButton *sent = new QPushButton("Sent");
+    sent->setMaximumSize(100,50);
+
+    btns->addWidget(compose);
+    btns->addWidget(sent);
+
+    connect(compose, &QPushButton::clicked, this, &MailBox::onComposeClicked);
+    //connect(compose, &QPushButton::clicked, this, &MailBox::onSentClicked);
+
+    mainlayout->addLayout(btns, 0, 0);
+    mainlayout->addWidget(wdg,1,0);
+//>>>>>>> 54028cc19c893881142cd38f3b27c49aa9c9ba8b
     mainlayout->addWidget(mail,1,1);
     setLayout(mainlayout);
 
@@ -83,12 +101,16 @@ void MailBox::onMailSelect(QString id)
     foreach (const QJsonValue & v, messages) {
         QJsonObject obj = v.toObject();
         if(obj.value("id") == id) {
-//            qWarning()<<obj;
+            qDebug() << "Clicked";
             this->mail->setDetails(obj);
         }
     }
 }
-
+void MailBox::onComposeClicked()
+{
+    composeBox = new ComposeMail();
+    mainlayout->addWidget(composeBox, 1, 1);
+}
 MailBox::~MailBox()
 {
 }
