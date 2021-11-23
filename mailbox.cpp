@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QScrollArea>
+#include <QPushButton>
 #include "mailbox.h"
 #include "mail.h"
 
@@ -49,7 +50,28 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     mail = new MailDetails();
     mail->setMinimumSize(500,500);
 
-    mainlayout->addWidget(wdg,1,0);
+    QPushButton *composeButton = new QPushButton("Compose");
+    QPushButton *starButton = new QPushButton("Star");
+    QPushButton *deleteButton = new QPushButton("Delete");
+
+    mainlayout->addWidget(composeButton, 0,0);
+    mainlayout->addWidget(starButton, 0,1);
+    mainlayout->addWidget(deleteButton, 0,2);
+
+    QPushButton *inboxButton = new QPushButton("Inbox");
+    QPushButton *draftsButton = new QPushButton("Drafts");
+    QPushButton *sentButton = new QPushButton("Sent");
+
+    QGridLayout *inboxTabBar = new QGridLayout();
+    inboxTabBar->addWidget(inboxButton,0,0);
+    inboxTabBar->addWidget(draftsButton,0,1);
+    inboxTabBar->addWidget(sentButton,0,2);
+
+    QVBoxLayout *sideBar = new QVBoxLayout();
+    sideBar->addLayout(inboxTabBar);
+    sideBar->addWidget(wdg);
+
+    mainlayout->addLayout(sideBar,1,0);
     mainlayout->addWidget(mail,1,1);
     setLayout(mainlayout);
 
