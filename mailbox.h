@@ -22,6 +22,8 @@ private:
     QGridLayout *mainlayout;
     QVBoxLayout *inboxlayout;
     ComposeMail *composeBox;
+
+    void readMails(QString filename, QString prop);
 public:
     MailBox(QWidget *parent = nullptr);
     ~MailBox();
@@ -29,6 +31,7 @@ public:
 private slots:
     void onMailSelect(QString id);
     void onComposeClicked();
-    //void onSentClicked();
+    void onSentClicked();
+    void onInboxClicked();
 };
 #endif // MAILBOX_H

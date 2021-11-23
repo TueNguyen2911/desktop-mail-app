@@ -1,39 +1,40 @@
 {
-    "sent": [
+	"sent":[
         {
-            "content": "1",
-            "subject": "1",
-            "to": "1"
+			"id":"44",
+            "subject": "example email",
+            "to": "BillyBob@senecacollege.ca",
+			"from":"hersh.k17@gmail.com",
+			"sendDate": "02/07/2011 16:47 UTC+3",
+			"receiveDate": "02/07/2021 16:52 UTC-4",
+            "content": "this is content"
         },
-        {
-            "content": "12",
-            "subject": "12",
-            "to": "1"
+		{
+			"id":"45",
+            "subject": "example email 2",
+            "to": "Bob@senecacollege.ca",
+			"from":"hersh.k17@gmail.com",
+			"sendDate": "02/07/2011 16:47 UTC+3",
+			"receiveDate": "02/07/2021 16:52 UTC-4",
+            "content": "this is also content"
         },
-        {
-            "content": "12333",
-            "subject": "12",
-            "to": "1"
+		{
+			"id":"46",
+            "subject": "example email 3",
+            "to": "Vegen@senecacollege.ca",
+			"from":"hersh.k17@gmail.com",
+			"sendDate": "02/07/2011 16:47 UTC+3",
+			"receiveDate": "02/07/2021 16:52 UTC-4",
+            "content": "this is also also content"
         },
-        {
-            "content": "12333",
-            "subject": "12as",
-            "to": "1as"
-        },
-        {
-            "content": "as",
-            "subject": "as",
-            "to": "as"
-        },
-        {
-            "content": "aszzz",
-            "subject": "as",
-            "to": "as"
-        },
-        {
-            "content": "aszzz",
-            "subject": "as",
-            "to": "as123"
+		{
+			"id":"47",
+            "subject": "example email 4",
+            "to": "Send@senecacollege.ca",
+			"from":"hersh.k17@gmail.com",
+			"sendDate": "02/07/2011 16:47 UTC+3",
+			"receiveDate": "02/07/2021 16:52 UTC-4",
+            "content": "this is not not content"
         }
-    ]
+		]
 }
