@@ -1,13 +1,14 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QJsonObject>
+#include <QPushButton>
 
 #include "maildetails.h"
 #include "mail.h"
 
 MailDetails::MailDetails(QWidget *parent) : QWidget(parent)
 {
-    QVBoxLayout *mailLayout = new QVBoxLayout();
+    mailLayout = new QVBoxLayout();
     mailLayout->setAlignment(Qt::AlignTop);
 
     fromLabel = new QLabel();
@@ -29,8 +30,9 @@ MailDetails::MailDetails(QWidget *parent) : QWidget(parent)
 
 void MailDetails::setDetails(QJsonObject mail)
 {
-    fromLabel->setText("<b>From:</b> " + mail.value("from").toString());
-    toLabel->setText("<b>To:</b> " + mail.value("to").toString());
-    subjectLabel->setText("<b>Sub:</b> " + mail.value("subject").toString());
-    contentLabel->setText(mail.value("content").toString());
+    this->mail = new Mail(mail.value("id").toString(), mail.value("subject").toString(), mail.value("to").toString(), mail.value("from").toString(), mail.value("sendDate").toString(), mail.value("receiveDate").toString(), mail.value("content").toString());
+    fromLabel->setText("<b>From:</b> " + this->mail->id);
+    toLabel->setText("<b>To:</b> " + this->mail->to);
+    subjectLabel->setText("<b>Sub:</b> " + this->mail->subject);
+    contentLabel->setText(this->mail->content);
 }

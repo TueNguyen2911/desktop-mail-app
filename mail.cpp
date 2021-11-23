@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QVBoxLayout>
+#include <QPushButton>
 #include <QLabel>
 
 Mail::Mail(QWidget *parent): QWidget(parent)

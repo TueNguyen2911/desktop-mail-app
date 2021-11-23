@@ -4,12 +4,17 @@
 #include <QWidget>
 #include <QLabel>
 #include <QJsonObject>
+#include <QVBoxLayout>
 
 #include "mail.h"
 
 class MailDetails : public QWidget
 {
     Q_OBJECT
+
+    Mail *mail;
+    QVBoxLayout *mailLayout;
+
 public:
     explicit MailDetails(QWidget *parent = nullptr);
     void setDetails(QJsonObject mail);
@@ -18,9 +23,6 @@ public:
     QLabel* toLabel;
     QLabel* subjectLabel;
     QLabel* contentLabel;
-
-signals:
-
 };
 
 #endif // MAILDETAILS_H
