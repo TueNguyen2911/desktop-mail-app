@@ -22,6 +22,13 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     mail->setMinimumSize(500,500);
     mainlayout->addWidget(mail,1,1);
 
+    composeBox = new ComposeMail();
+    composeBox->setMinimumSize(500,500);
+    mainlayout->addWidget(composeBox, 1, 1);
+
+    composeBox->hide();
+    mail->show();
+
     QHBoxLayout *btns = new QHBoxLayout();
     QPushButton *inbox = new QPushButton("Inbox");
     QPushButton *sent = new QPushButton("Sent");
@@ -52,6 +59,8 @@ void MailBox::onMailSelect(QString id)
     foreach (const QJsonValue & v, messages) {
         QJsonObject obj = v.toObject();
         if(obj.value("id") == id) {
+            composeBox->hide();
+            mail->show();
             this->selectedMail = id;
             this->mail->setDetails(obj);
         }
@@ -60,8 +69,8 @@ void MailBox::onMailSelect(QString id)
 
 void MailBox::onComposeClicked()
 {
-    composeBox = new ComposeMail();
-    mainlayout->addWidget(composeBox, 1, 1);
+    mail->hide();
+    composeBox->show();
 }
 
 void MailBox::readMails() {
@@ -81,12 +90,18 @@ void MailBox::readMails() {
 
     foreach (const QJsonValue & v, messages) {
         QJsonObject obj = v.toObject();
+        QJsonArray attachments = obj["attachments"].toArray();
+        QList<QString> atts;
+        foreach(const auto & attachment, attachments) {
+            atts.push_back(attachment.toString());
+        }
         Mail *m = new Mail(obj.value("id").toString(),
                            obj.value("subject").toString(),
-                           obj.value("from").toString(),
                            obj.value("to").toString(),
+                           obj.value("from").toString(),
                            obj.value("sendDate").toString(),
                            obj.value("receiveDate").toString(),
+                           atts,
                            obj.value("content").toString());
         m->setMinimumHeight(70);
         m->setMaximumWidth(250);
@@ -112,6 +127,7 @@ void MailBox::onDeleteClicked() {
             messages.erase(it);
             writeMails();
             readMails();
+            mail->clearDetails();
             break;
         }
     }
@@ -135,12 +151,14 @@ void MailBox::writeMails() {
 void MailBox::onSentClicked()
 {
     currentInbox="sent.json";
+    mail->clearDetails();
     readMails();
 }
 
 void MailBox::onInboxClicked()
 {
     currentInbox="mails.json";
+    mail->clearDetails();
     readMails();
 }
 

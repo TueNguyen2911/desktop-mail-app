@@ -18,11 +18,13 @@ class MailDetails : public QWidget
 public:
     explicit MailDetails(QWidget *parent = nullptr);
     void setDetails(QJsonObject mail);
+    void clearDetails();
 
     QLabel* fromLabel;
     QLabel* toLabel;
     QLabel* subjectLabel;
     QLabel* contentLabel;
+    QLabel* attachmentsLabel;
 };
 
 #endif // MAILDETAILS_H

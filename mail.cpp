@@ -7,10 +7,11 @@
 
 Mail::Mail(QWidget *parent): QWidget(parent)
 {
-
+    QVBoxLayout *mailLayout = new QVBoxLayout();
+    setLayout(mailLayout);
 }
 
-Mail::Mail(QString id, QString subject, QString to, QString from, QString sendDate, QString receiveDate, QString content)
+Mail::Mail(QString id, QString subject, QString to, QString from, QString sendDate, QString receiveDate, QList<QString> attachments, QString content)
 {
     this->id = id;
     this->subject = subject;
@@ -18,6 +19,7 @@ Mail::Mail(QString id, QString subject, QString to, QString from, QString sendDa
     this->from = from;
     this->sendDate = sendDate;
     this->receiveDate = receiveDate;
+    this->attachments = attachments;
     this->content = content;
 
     QVBoxLayout *mailLayout = new QVBoxLayout();

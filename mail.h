@@ -15,10 +15,11 @@ public:
     QString from;
     QString sendDate;
     QString receiveDate;
+    QList<QString> attachments;
     QString content;
 
     Mail(QWidget *parent = nullptr);
-    Mail(QString id, QString subject, QString to, QString from, QString sendDate, QString receiveDate, QString content);
+    Mail(QString id, QString subject, QString to, QString from, QString sendDate, QString receiveDate, QList<QString> attachments, QString content);
     ~Mail();
 
 protected:

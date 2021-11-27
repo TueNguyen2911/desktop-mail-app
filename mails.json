@@ -3,6 +3,7 @@
 	"version": "1.0",
 	"id": "mb07981",
 	"messages": [{
+			"id": "0",
 			"subject": "miracle weight loss",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "annoyingads@hcentral.ru",
@@ -11,6 +12,7 @@
 			"content": "Lose over 40 pounds per week with our miracle weight loss pills! Nothing else is like our pills. Click here to order: <a>https://annoyingscam.takemoney@hcentral.ru</a>"
 		},
 		{
+			"id": "1",
 			"subject": "life sux",
 			"replyTo": "jimmyjoe@senecacollege.ca",
 			"from": "BillyBob@senecacollege.ca",
@@ -18,6 +20,7 @@
 			"receiveDate": "02/07/2021 16:42 UTC-4",
 			"content": "Everyone's life sucks now, it's Covid.",
 			"inResponseTo": [{
+					"id": "2",
 					"subject": "life sux",
 					"to": "BillyBob@senecacollege.ca",
 					"from": "jimmyjoe@senecacollege.ca",
@@ -26,6 +29,7 @@
 					"content": "My life sucks!"
 				},
 				{
+					"id": "3",
 					"subject": "life sux",
 					"to": "jimmyjoe@senecacollege.ca",
 					"from": "BillyBob@senecacollege.ca",
@@ -36,6 +40,7 @@
 			]
 		},
 		{
+			"id": "4",
 			"subject": "miracle weight l o s s",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "annoyingads@hcentral.ru",
@@ -44,21 +49,20 @@
 			"content": "Lose over 40 pounds per week with our miracle weight loss pills! Nothing else is like our pills. Click here to order: <a>https://annoyingscam.takemoney@hcentral.ru</a>"
 		},
 		{
+			"id": "5",
 			"subject": "my code",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "sallysue@senecacollege.ca",
 			"sendDate": "02/07/2011 16:07 UTC-4",
 			"receiveDate": "02/07/2021 16:04 UTC-4",
 			"content": "Here is my code for assign 2.",
-			"attachments": [{
-					"reference": "0968_as1.c"
-				},
-				{
-					"reference": "0967_as1.h"
-				}
+			"attachments": [
+				"0968_as1.c",
+				"0967_as1.h"
 			]
 		},
 		{
+			"id": "6",
 			"subject": "first assignment",
 			"to": "sallysue@senecacollege.ca",
 			"from": "BillyBob@senecacollege.ca",
@@ -67,6 +71,7 @@
 			"content": "Have you started the assignment yet?"
 		},
 		{
+			"id": "7",
 			"subject": "going home",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "jimmyjoe@senecacollege.ca",
@@ -75,6 +80,7 @@
 			"content": "Im going home for the weekend."
 		},
 		{
+			"id": "8",
 			"subject": "cannot make dinner",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "sueellen@senecacollege.ca",
@@ -83,6 +89,7 @@
 			"content": "Sorry, cannot make dinner next week. Inlaws showed up for visit. Sue"
 		},
 		{
+			"id": "9",
 			"subject": "What to bring",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "jimmyjoe@senecacollege.ca",
@@ -99,12 +106,15 @@
 			}]
 		},
 		{
+			"id": "10",
 			"subject": "What to bring",
 			"to": "jimmyjoe@senecacollege.ca",
 			"from": "BillyBob@senecacollege.ca",
 			"sendDate": "01/07/2011 16:12 UTC-4",
 			"content": "Something that everyone will like."
-		}, {
+		}, 
+		{
+			"id": "11",
 			"subject": "What to bring",
 			"to": "BillyBob@senecacollege.ca",
 			"from": "jimmyjoe@senecacollege.ca",

@@ -1,40 +1,34 @@
 {
-	"sent":[
+    "sent": [
         {
-			"id":"44",
+            "content": "this is content",
+            "from": "user@gmail.com",
+            "id": "1000",
+            "receiveDate": "02/07/2021 16:52 UTC-4",
+            "sendDate": "02/07/2011 16:47 UTC+3",
             "subject": "example email",
-            "to": "BillyBob@senecacollege.ca",
-			"from":"hersh.k17@gmail.com",
-			"sendDate": "02/07/2011 16:47 UTC+3",
-			"receiveDate": "02/07/2021 16:52 UTC-4",
-            "content": "this is content"
+            "to": "BillyBob@senecacollege.ca"
         },
-		{
-			"id":"45",
+        {
+            "content": "this is also content",
+            "from": "user@gmail.com",
+            "id": "1001",
+            "receiveDate": "02/07/2021 16:52 UTC-4",
+            "sendDate": "02/07/2011 16:47 UTC+3",
             "subject": "example email 2",
-            "to": "Bob@senecacollege.ca",
-			"from":"hersh.k17@gmail.com",
-			"sendDate": "02/07/2011 16:47 UTC+3",
-			"receiveDate": "02/07/2021 16:52 UTC-4",
-            "content": "this is also content"
+            "to": "Bob@senecacollege.ca"
         },
-		{
-			"id":"46",
-            "subject": "example email 3",
-            "to": "Vegen@senecacollege.ca",
-			"from":"hersh.k17@gmail.com",
-			"sendDate": "02/07/2011 16:47 UTC+3",
-			"receiveDate": "02/07/2021 16:52 UTC-4",
-            "content": "this is also also content"
-        },
-		{
-			"id":"47",
-            "subject": "example email 4",
-            "to": "Send@senecacollege.ca",
-			"from":"hersh.k17@gmail.com",
-			"sendDate": "02/07/2011 16:47 UTC+3",
-			"receiveDate": "02/07/2021 16:52 UTC-4",
-            "content": "this is not not content"
+        {
+            "attachments": [
+                "mails.json",
+                "sent.json"
+            ],
+            "content": "hello world",
+            "from": "user@gmail.com",
+            "id": "1002",
+            "sendDate": "02/07/2011 16:47 UTC+3",
+            "subject": "example subject",
+            "to": "temp@gmail.com"
         }
-		]
+    ]
 }
