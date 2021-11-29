@@ -83,12 +83,26 @@ void ComposeMail::writeMails(QString filename, QString prop) {
     QJsonArray sentArray = item.value(prop).toArray();
 
     int id = 1000;
+    int sameId = -1;
+    int index = 0;
     foreach (const QJsonValue & v, sentArray) {
-        id = v.toObject().value("id").toInt()+1;
+
+        if(v.toObject().value("id").toString().toInt() >= 1000)
+            id = v.toObject().value("id").toString().toInt() + 1;
+                       qDebug() << id;
+
+        if(v.toObject().value("id").toString().toInt() == draftId.toInt()) {
+
+             id =  draftId.toInt();
+             sameId = index;
+            break;
+        }
+        index++;
     }
-    if(filename == "draft.json" && draftId.length() > 0){
-        id = draftId.toInt();
-    }
+
+//    if(filename == "draft.json" && draftId.length() > 0){
+//        id = draftId.toInt();
+//    }
 //    if(this->id.length() > 0)
 //        id = this->id.toInt();
     MailCP *sent = new MailCP(QString::number(id), subject->text(), to->text(), "user@gmail.com", "02/07/2011 16:47 UTC+3", attachList, emailBody->document()->toPlainText());
@@ -104,9 +118,15 @@ void ComposeMail::writeMails(QString filename, QString prop) {
         atts.push_back(QJsonValue(attachmentDetail[attachmentDetail.length() - 1]));
     }
     sentObj.insert("attachments", atts);
+        qDebug() << id;
+        qDebug() << draftId << "draft";
     sentObj.insert("content", sent->content_);
-
-    sentArray.append(sentObj);
+            qDebug() << index;
+    if(sameId < 0) {
+        sentArray.append(sentObj);
+    } else {
+        sentArray.replace(sameId, sentObj);
+    }
 
     item.insert(prop, sentArray);
     mails.setObject(item);
@@ -132,15 +152,19 @@ void ComposeMail::deleteDraft(QString filename, QString prop) {
     QJsonDocument mails = QJsonDocument::fromJson(file.readAll());
     QJsonObject item = mails.object();
     QJsonArray jsonArray = item.value(prop).toArray();
-    QString idToDel;
-
+    int sameId = -1;
+    int index = 0;
     foreach (const QJsonValue & v, jsonArray) {
-            if(idToDel == v.toObject().value("id").toString()) {
-                idToDel = v.toObject().value("id").toString();
+        qDebug() << sameId;
+         qDebug() << draftId.toInt();
+         qDebug() << v.toObject().value("id").toString().toInt();
+            if(draftId == v.toObject().value("id").toString()) {
+                sameId = index;
                 break;
             }
+            index++;
     }
-    jsonArray.removeAt(idToDel.toInt());
+    jsonArray.removeAt(sameId);
     item.insert(prop, jsonArray);
     mails.setObject(item);
     QByteArray bytes = mails.toJson( QJsonDocument::Indented );

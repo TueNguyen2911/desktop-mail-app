@@ -122,6 +122,7 @@ void MailBox::onComposeClicked()
     for(int i = 0; i < topBtns.size(); i++) {
         topBtns[i]->blockSignals(true);
     }
+    composeBox->draftId = "";
     composeBox->show();
 
 }
