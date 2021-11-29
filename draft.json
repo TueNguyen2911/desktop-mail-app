@@ -1,0 +1,24 @@
+{
+    "draft": [
+        {
+            "attachments": [
+            ],
+            "content": "asdzzxcasd",
+            "from": "user@gmail.com",
+            "id": "1000",
+            "sendDate": "02/07/2011 16:47 UTC+3",
+            "subject": "aaaa",
+            "to": "123"
+        },
+        {
+            "attachments": [
+            ],
+            "content": "aazzxcv",
+            "from": "user@gmail.com",
+            "id": "1001",
+            "sendDate": "02/07/2011 16:47 UTC+3",
+            "subject": "asd",
+            "to": "asd"
+        }
+    ]
+}

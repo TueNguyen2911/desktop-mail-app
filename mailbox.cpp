@@ -23,6 +23,8 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     mainlayout->addWidget(mail,1,1);
 
     composeBox = new ComposeMail();
+    connect(composeBox, &ComposeMail::closeClicked, this, &MailBox::onCloseCompose);
+
     composeBox->setMinimumSize(500,500);
     mainlayout->addWidget(composeBox, 1, 1);
 
@@ -34,20 +36,32 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
     QPushButton *sent = new QPushButton("Sent");
     QPushButton *compose = new QPushButton("Compose");
     QPushButton *delButton = new QPushButton("Delete");
+    QPushButton *draftBtn = new QPushButton("Drafts");
+
+
+    topBtns.append(inbox);
+    topBtns.append(sent);
+    topBtns.append(compose);
+    topBtns.append(delButton);
+    topBtns.append(draftBtn);
 
     inbox->setMaximumSize(100,50);
     sent->setMaximumSize(100,50);
     compose->setMaximumSize(100,50);
+    delButton->setMaximumSize(100,50);
+    draftBtn->setMaximumSize(100,50);
 
     btns->addWidget(inbox);
     btns->addWidget(sent);
     btns->addWidget(compose);
     btns->addWidget(delButton);
+    btns->addWidget(draftBtn);
 
     connect(inbox, &QPushButton::clicked, this, &MailBox::onInboxClicked);
     connect(sent, &QPushButton::clicked, this, &MailBox::onSentClicked);
     connect(compose, &QPushButton::clicked, this, &MailBox::onComposeClicked);
     connect(delButton, &QPushButton::clicked, this, &MailBox::onDeleteClicked);
+    connect(draftBtn, &QPushButton::clicked, this, &MailBox::onDraftClicked);
 
     mainlayout->addLayout(btns, 0, 0);
 
@@ -56,6 +70,7 @@ MailBox::MailBox(QWidget *parent): QWidget(parent)
 
 void MailBox::onMailSelect(QString id)
 {
+    qDebug() << id;
     foreach (const QJsonValue & v, messages) {
         QJsonObject obj = v.toObject();
         if(obj.value("id") == id) {
@@ -66,36 +81,82 @@ void MailBox::onMailSelect(QString id)
         }
     }
 }
+void MailBox::onDraftSelect(QString id)
+{
+    for(int i = 0; i < msgLength; i++) {
+        m2[i]->blockSignals(true);
+    }
+    for(int i = 0; i < topBtns.size(); i++) {
+        topBtns[i]->blockSignals(true);
+    }
+    foreach (const QJsonValue & v, messages) {
+        QJsonObject obj = v.toObject();
 
+        if(obj.value("id") == id) {
+                        qDebug() << obj;
+            mail->hide();
+            composeBox->draftId = obj.value("id").toString();
+            //composeBox->id = obj.value("id").toString();
+            composeBox->to->setText(obj.value("to").toString());
+            composeBox->subject->setText(obj.value("subject").toString());
+            composeBox->emailBody->setText(obj.value("content").toString());
+//            composeBox->attachList = obj.value("attachments").toArray();
+            //composeBox->msg->setText(obj.value("content").toString());
+            //composeBox->id = obj.value("id").toString();
+            composeBox->show();
+
+            //mail->show();
+            this->selectedDraft = id;
+
+
+        }
+    }
+}
 void MailBox::onComposeClicked()
 {
     mail->hide();
+            qDebug() << msgLength;
+    for(int i = 0; i < msgLength; i++) {
+        m2[i]->blockSignals(true);
+    }
+    for(int i = 0; i < topBtns.size(); i++) {
+        topBtns[i]->blockSignals(true);
+    }
     composeBox->show();
+
 }
 
-void MailBox::readMails() {
+void MailBox::readMails(bool draft) {
     QFile file;
     file.setFileName(this->currentInbox);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QJsonDocument mails = QJsonDocument::fromJson(file.readAll());
     QJsonObject item = mails.object();
 
-    QWidget *wdg = new QWidget;
+    wdg = new QWidget;
     QScrollArea *scroll = new QScrollArea;
     QWidget *content_widget = new QWidget;
     inboxlayout = new QVBoxLayout(content_widget);
 
     QString prop = currentInbox == "mails.json" ? "messages" : "sent";
+    if(draft) {
+        prop = "draft";
+    }
+    qDebug() << prop;
     messages = item.value(prop).toArray();
-
+    qDebug() << messages;
+    msgLength = messages.size();
+    m2 = new Mail*[msgLength + 1];
+    int i = 0;
     foreach (const QJsonValue & v, messages) {
+
         QJsonObject obj = v.toObject();
         QJsonArray attachments = obj["attachments"].toArray();
         QList<QString> atts;
         foreach(const auto & attachment, attachments) {
             atts.push_back(attachment.toString());
         }
-        Mail *m = new Mail(obj.value("id").toString(),
+        m2[i] = new Mail(obj.value("id").toString(),
                            obj.value("subject").toString(),
                            obj.value("to").toString(),
                            obj.value("from").toString(),
@@ -103,17 +164,23 @@ void MailBox::readMails() {
                            obj.value("receiveDate").toString(),
                            atts,
                            obj.value("content").toString());
-        m->setMinimumHeight(70);
-        m->setMaximumWidth(250);
-        inboxlayout->addWidget(m);
-        connect(m, &Mail::clicked, this, &MailBox::onMailSelect);
+        m2[i]->setMinimumHeight(70);
+        m2[i]->setMaximumWidth(250);
+        inboxlayout->addWidget(m2[i]);
+        m2[i]->blockSignals(false);
+        if(!draft) {
+            connect(m2[i], &Mail::clicked, this, &MailBox::onMailSelect);
+        } else {
+            connect(m2[i], &Mail::clicked, this, &MailBox::onDraftSelect);
+        }
+        i++;
     }
 
     scroll->setWidget(content_widget);
     wdg->setLayout(new QVBoxLayout);
     wdg->layout()->addWidget(scroll);
     wdg->setMinimumSize(300,500);
-
+    wdg->setMaximumWidth(500);
     mainlayout->addWidget(wdg,1,0);
 
     setLayout(mainlayout);
@@ -122,13 +189,16 @@ void MailBox::readMails() {
 }
 
 void MailBox::onDeleteClicked() {
-    for(auto it = messages.begin(); it != messages.end(); it++) {
-        if((*it).toObject().value("id")==selectedMail) {
-            messages.erase(it);
-            writeMails();
-            readMails();
-            mail->clearDetails();
-            break;
+    QString selected = box == "inbox" ? selectedMail : selectedDraft;
+    if(box == "inbox" || box == "draft") {
+        for(auto it = messages.begin(); it != messages.end(); it++) {
+            if((*it).toObject().value("id")==selectedMail) {
+                messages.erase(it);
+                writeMails();
+                readMails();
+                mail->clearDetails();
+                break;
+            }
         }
     }
 }
@@ -150,6 +220,7 @@ void MailBox::writeMails() {
 
 void MailBox::onSentClicked()
 {
+    qDebug() << "Yo";
     currentInbox="sent.json";
     mail->clearDetails();
     readMails();
@@ -157,11 +228,27 @@ void MailBox::onSentClicked()
 
 void MailBox::onInboxClicked()
 {
+    box = "inbox";
     currentInbox="mails.json";
     mail->clearDetails();
     readMails();
 }
-
+void MailBox::onCloseCompose() {
+    composeBox->hide();
+    mail->show();
+    for(int i = 0; i < msgLength; i++) {
+        m2[i]->blockSignals(false);
+    }
+    for(int i = 0; i < topBtns.size(); i++) {
+        topBtns[i]->blockSignals(false);
+    }
+}
+void MailBox::onDraftClicked() {
+    box = "draft";
+    currentInbox="draft.json";
+    mail->clearDetails();
+    readMails(true);
+}
 MailBox::~MailBox()
 {
 

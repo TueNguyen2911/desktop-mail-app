@@ -21,7 +21,6 @@ Mail::Mail(QString id, QString subject, QString to, QString from, QString sendDa
     this->receiveDate = receiveDate;
     this->attachments = attachments;
     this->content = content;
-
     QVBoxLayout *mailLayout = new QVBoxLayout();
 
     QLabel* fromLabel = new QLabel("<b>" + this->from + "</b>");
@@ -37,6 +36,7 @@ Mail::Mail(QString id, QString subject, QString to, QString from, QString sendDa
     mailLayout->addWidget(contentLabel);
 
     setLayout(mailLayout);
+
 }
 
 void Mail::mousePressEvent(QMouseEvent *event)

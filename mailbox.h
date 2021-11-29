@@ -8,6 +8,8 @@
 #include <QGridLayout>
 #include <QList>
 #include <QLabel>
+#include <QPushButton>
+#include <QVector>
 
 #include "mail.h"
 #include "maildetails.h"
@@ -17,6 +19,8 @@ class MailBox : public QWidget
     Q_OBJECT
 
 private:
+    QString box;
+
     QJsonArray messages;
     MailDetails *mail;
     QGridLayout *mainlayout;
@@ -24,9 +28,17 @@ private:
     ComposeMail *composeBox;
 
     QString selectedMail;
+    QString selectedDraft;
     QString currentInbox;
 
-    void readMails();
+    QVector<QPushButton*> topBtns;
+
+    Mail** m2;
+    int msgLength;
+
+    QWidget *wdg;
+
+    void readMails(bool draft = false);
     void writeMails();
 public:
     MailBox(QWidget *parent = nullptr);
@@ -38,5 +50,8 @@ private slots:
     void onSentClicked();
     void onInboxClicked();
     void onDeleteClicked();
+    void onCloseCompose();
+    void onDraftClicked();
+    void onDraftSelect(QString id);
 };
 #endif // MAILBOX_H
