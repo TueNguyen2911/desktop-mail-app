@@ -132,7 +132,7 @@ void MailBox::readMails(bool draft) {
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QJsonDocument mails = QJsonDocument::fromJson(file.readAll());
     QJsonObject item = mails.object();
-
+qDebug() << item;
     wdg = new QWidget;
     QScrollArea *scroll = new QScrollArea;
     QWidget *content_widget = new QWidget;
@@ -189,17 +189,17 @@ void MailBox::readMails(bool draft) {
 }
 
 void MailBox::onDeleteClicked() {
-    QString selected = box == "inbox" ? selectedMail : selectedDraft;
-    if(box == "inbox" || box == "draft") {
+    QString selected = box == "draft" ? selectedDraft : selectedMail;
+
         for(auto it = messages.begin(); it != messages.end(); it++) {
-            if((*it).toObject().value("id")==selectedMail) {
+            if((*it).toObject().value("id")==selected) {
                 messages.erase(it);
                 writeMails();
-                readMails();
+                readMails(box == "draft" ? true : false);
                 mail->clearDetails();
                 break;
             }
-        }
+
     }
 }
 
@@ -209,6 +209,8 @@ void MailBox::writeMails() {
     file.open(QIODevice::ReadWrite | QIODevice::Truncate |QIODevice::Text);
 
     QString prop = currentInbox == "mails.json" ? "messages" : "sent";
+    if(currentInbox == "draft.json")
+        prop = "draft";
     QJsonObject mails;
     QJsonArray propArr(messages);
     mails.insert(prop, propArr);
@@ -220,7 +222,7 @@ void MailBox::writeMails() {
 
 void MailBox::onSentClicked()
 {
-    qDebug() << "Yo";
+    box = "sent";
     currentInbox="sent.json";
     mail->clearDetails();
     readMails();
@@ -242,6 +244,8 @@ void MailBox::onCloseCompose() {
     for(int i = 0; i < topBtns.size(); i++) {
         topBtns[i]->blockSignals(false);
     }
+    onInboxClicked();
+
 }
 void MailBox::onDraftClicked() {
     box = "draft";

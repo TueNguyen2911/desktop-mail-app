@@ -59,7 +59,6 @@ private slots:
     void closeClickedDraft();
 signals:
     void closeClicked();
-    void submitted();
 };
 
 #endif // COMPOSEMAIL_H

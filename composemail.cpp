@@ -82,11 +82,10 @@ void ComposeMail::writeMails(QString filename, QString prop) {
     QJsonObject item = mails.object();
     QJsonArray sentArray = item.value(prop).toArray();
 
-    int id;
+    int id = 1000;
     foreach (const QJsonValue & v, sentArray) {
         id = v.toObject().value("id").toInt()+1;
     }
-    qDebug() << id;
     if(filename == "draft.json" && draftId.length() > 0){
         id = draftId.toInt();
     }
@@ -106,6 +105,7 @@ void ComposeMail::writeMails(QString filename, QString prop) {
     }
     sentObj.insert("attachments", atts);
     sentObj.insert("content", sent->content_);
+
     sentArray.append(sentObj);
 
     item.insert(prop, sentArray);
@@ -113,6 +113,7 @@ void ComposeMail::writeMails(QString filename, QString prop) {
 
     QByteArray bytes = mails.toJson( QJsonDocument::Indented );
     file.close();
+    qDebug() << mails;
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
         QTextStream iStream( &file );
@@ -132,7 +133,7 @@ void ComposeMail::deleteDraft(QString filename, QString prop) {
     QJsonObject item = mails.object();
     QJsonArray jsonArray = item.value(prop).toArray();
     QString idToDel;
-    //qDebug() << sentArray;
+
     foreach (const QJsonValue & v, jsonArray) {
             if(idToDel == v.toObject().value("id").toString()) {
                 idToDel = v.toObject().value("id").toString();
@@ -155,7 +156,6 @@ void ComposeMail::deleteDraft(QString filename, QString prop) {
 void ComposeMail::handleSubmit()
 {
     if(to->text().length() == 0 || subject->text().length() == 0 || emailBody->document()->toPlainText().length() == 0) {
-        qDebug() << "Empty";
         msg->setStyleSheet("QLabel { color: red; }");
         msg->setText("All the fields must be filled");
     }
@@ -164,17 +164,19 @@ void ComposeMail::handleSubmit()
         to->setText("");
         subject->setText("");
         emailBody->setText("");
+        deleteDraft();
         draftId = "";
-        //deleteDraft();
+
     }
 }
 
 void ComposeMail::closeClickedDraft() {
     if(to->text().length() != 0 && subject->text().length() != 0 && emailBody->document()->toPlainText().length() != 0) {
         writeMails("draft.json", "draft");
+
     }
     to->setText("");
     subject->setText("");
     emailBody->setText("");
-            deleteDraft();
+    msg->setText("");
 }
